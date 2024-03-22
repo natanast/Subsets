@@ -20,10 +20,10 @@ library(dplyr)
 
 #files names
 
-fls    = "C:/Users/nanastasiadou/Desktop/Carmilla 2.0/Samples/"
+fls    = "C:/Users/nanastasiadou/Desktop/Carmilla 2.0/Subsets/Samples/"
 
 fls    = fls |> 
-    list.files(full.names = TRUE) 
+           list.files(full.names = TRUE) 
 
 
 
@@ -34,9 +34,6 @@ for (file in fls) {
     summary_file <- file.path(file, "1_Summary.txt")
     df <- fread(summary_file, sep = "\t", fill = TRUE, select = 1:33)
 
-    
-    
-    
     
     # --------------- subset 1-99---------------------
     df1 <- df |>
@@ -706,7 +703,7 @@ for (file in fls) {
             filter(`IGHV.subgroup` %in% c("IGHV1", "IGHV5", "IGHV7"),
                    `IGHJ.gene` == "IGHJ4", 
                    `CDR3-IMGT length` %in% 17:21,
-                   `CDR3.offset.Subset12` == "TRUE") |>
+                   `CDR3.offset.true` == "TRUE") |>
             mutate(`is.Subset.12` = ifelse(
                    `CDR3-IMGT length` == 19 &
                    `CDR3.offset.Subset12` == "YYDSSGYY",
@@ -1208,7 +1205,7 @@ for (file in fls) {
                `CDR3.offset` = substr(`AA JUNCTION`, 2, 6),
                `CDR3.offset.true` = grepl("HR", `CDR3.offset`),
                `CDR3.offset2` = substr(`AA JUNCTION`, 9, 13),
-               `CDR3.offset2.true` = grepl("W", `CDR3.offset`),
+               `CDR3.offset2.true` = grepl("W", `CDR3.offset2`),
                `CDR3.offset.Subset148B.A` = substr(`AA JUNCTION`, 3, 4),
                `CDR3.offset.Subset148B.B` = substr(`AA JUNCTION`, 11, 11)) |>
         filter(`IGHV.subgroup` %in% c("IGHV2", "IGHV4", "IGHV6"),
@@ -1403,9 +1400,9 @@ for (file in fls) {
                `CDR3.offset.GDY.true` == "TRUE") |>
         mutate(`is.Subset.202` = ifelse(
                `CDR3-IMGT length` == 14 &
-                `CDR3.offset.Subset202` == "GDY",
-                TRUE,
-                FALSE))
+               `CDR3.offset.Subset202` == "GDY",
+               TRUE,
+               FALSE))
     
     
     
@@ -1444,28 +1441,29 @@ for (file in fls) {
     #relaxation of +-2 the relevant positions are 5-9
     
     df1 <- df |>
-        filter(`V-DOMAIN Functionality` == "productive" |
-               `V-DOMAIN Functionality` == "productive (see comment)",
-               `CDR3-IMGT length` != "X") |>
-        mutate(`IGHV.subgroup` = substr(`V-GENE and allele`, 8, 12),
-               `IGHV.gene` = substr(`V-GENE and allele`, 8, 15),
-               `IGHJ.gene` = substr(`J-GENE and allele`, 8, 12),
-               `CDR3.offset` = substr(`AA JUNCTION`, 6, 10),
-               `CDR3.offset.true` = grepl("G", `CDR3.offset`),
-               `CDR3.offset2` = substr(`AA JUNCTION`, 8, 12),
-               `CDR3.offset2.true` = grepl("F", `CDR3.offset`),
-               `CDR3.offset.Subset252A` = substr(`AA JUNCTION`, 8, 8),
-               `CDR3.offset.Subset252B` = substr(`AA JUNCTION`, 10, 10)) |>
-        filter(`IGHV.subgroup` %in% c("IGHV3"),
-               `IGHJ.gene` == "IGHJ6", 
-               `CDR3-IMGT length` %in% 17:21,
-               `CDR3.offset.true` == "TRUE") |>
-        mutate(`is.Subset.252` = ifelse(
-               `CDR3-IMGT length` == 19 &
-               `CDR3.offset.Subset252A` == "G" &
-               `CDR3.offset.Subset252B` == "F",
-                TRUE,
-                FALSE))
+            filter(`V-DOMAIN Functionality` == "productive" |
+                   `V-DOMAIN Functionality` == "productive (see comment)",
+                   `CDR3-IMGT length` != "X") |>
+            mutate(`IGHV.subgroup` = substr(`V-GENE and allele`, 8, 12),
+                   `IGHV.gene` = substr(`V-GENE and allele`, 8, 15),
+                   `IGHJ.gene` = substr(`J-GENE and allele`, 8, 12),
+                   `CDR3.offset` = substr(`AA JUNCTION`, 6, 10),
+                   `CDR3.offset.true` = grepl("G", `CDR3.offset`),
+                   `CDR3.offset2` = substr(`AA JUNCTION`, 8, 12),
+                   `CDR3.offset2.true` = grepl("F", `CDR3.offset2`),
+                   `CDR3.offset.Subset252A` = substr(`AA JUNCTION`, 8, 8),
+                   `CDR3.offset.Subset252B` = substr(`AA JUNCTION`, 10, 10)) |>
+            filter(`IGHV.subgroup` %in% c("IGHV3"),
+                   `IGHJ.gene` == "IGHJ6", 
+                   `CDR3-IMGT length` %in% 17:21,
+                   `CDR3.offset.true` == "TRUE",
+                   `CDR3.offset2.true` == "TRUE") |>
+            mutate(`is.Subset.252` = ifelse(
+                   `CDR3-IMGT length` == 19 &
+                   `CDR3.offset.Subset252A` == "G" &
+                   `CDR3.offset.Subset252B` == "F",
+                    TRUE,
+                    FALSE))
     
     
     
@@ -1492,6 +1490,14 @@ for (file in fls) {
     
     #Write the list of data frames to an Excel file with different sheets
     writexl::write_xlsx(df_list, path = excel_file)
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
