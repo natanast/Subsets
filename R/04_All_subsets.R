@@ -54,7 +54,7 @@ for (file in fls) {
                    `CDR3.offset.Subset1` == "QWL",
                     TRUE,
                     FALSE)) |>
-            mutate(is.Subset99 = ifelse(
+            mutate(`is.Subset99` = ifelse(
                   `CDR3-IMGT length` == 14 &
                   `CDR3.offset.Subset1` == "QWL", 
                    TRUE,
@@ -63,21 +63,21 @@ for (file in fls) {
     
     #Subset1
     Subset_1 <- df1 |>
-        filter(is.Subset1 == "TRUE") |>
-        select(1:(ncol(df1) - 7))
+        filter(`is.Subset1` == "TRUE") |>
+        select(1:(ncol(df1) - 8))
     
     
     
     #Subset99
     Subset99 <- df1 |>
-                    filter(is.Subset99 == "TRUE") |>
-                    select(1:(ncol(df1)-7))  
+                    filter(`is.Subset99` == "TRUE") |>
+                    select(1:(ncol(df1)-8))  
                 
     
     #Satellite
     Subset1_99_Sat <- df1 |>
-                    filter(is.Subset1 == "FALSE",  is.Subset99 == "FALSE") |>
-                    select(1:(ncol(df1) - 7))
+                    filter(`is.Subset1` == "FALSE",  `is.Subset99` == "FALSE") |>
+                    select(1:(ncol(df1) - 8))
     
     
     #save file

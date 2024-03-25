@@ -43,7 +43,7 @@ carmilla <- function(
     
     
     
-    df1 <-  |>
+    df1 <- df
         
         mutate(`IGHV.subgroup` = substr(`V-GENE and allele`, 8, 12),
                `IGHJ.gene` = substr(`J-GENE and allele`, 8, 12),
